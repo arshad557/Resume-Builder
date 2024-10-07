@@ -1,0 +1,112 @@
+package arshad;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class ResumeMaker {
+
+    // Method to get input from the user
+    public static String getInput(String prompt) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print(prompt);
+        return scanner.nextLine();
+    }
+
+    // Method to generate and print the resume
+    public static void generateResume() {
+        String name = getInput("Enter your name: ");
+        String email = getInput("Enter your email: ");
+        String phone = getInput("Enter your phone number: ");
+        String address = getInput("Enter your address: ");
+
+        // Getting Education Details
+        ArrayList<String> educationList = new ArrayList<>();
+        int educationCount = Integer.parseInt(getInput("How many educational qualifications do you have? "));
+        for (int i = 0; i < educationCount; i++) {
+            System.out.println("Enter details for education #" + (i + 1));
+            String qualification = getInput("Enter Qualification (Degree, University, Year of Completion): ");
+            educationList.add(qualification);
+        }
+
+        // Getting Work Experience
+        ArrayList<String> experienceList = new ArrayList<>();
+        int experienceCount = Integer.parseInt(getInput("How many job experiences do you want to add? "));
+        for (int i = 0; i < experienceCount; i++) {
+            System.out.println("Enter details for job #" + (i + 1));
+            String experience = getInput("Enter Experience (Job Title, Company, Duration, Responsibilities): ");
+            experienceList.add(experience);
+        }
+
+        // Getting Skills
+        ArrayList<String> skillList = new ArrayList<>();
+        int skillCount = Integer.parseInt(getInput("How many skills do you want to add? "));
+        for (int i = 0; i < skillCount; i++) {
+            String skill = getInput("Enter Skill #" + (i + 1) + ": ");
+            skillList.add(skill);
+        }
+
+        // Display the resume in console
+        System.out.println("\n--- Generated Resume ---");
+        System.out.println("Name: " + name);
+        System.out.println("Email: " + email);
+        System.out.println("Phone: " + phone);
+        System.out.println("Address: " + address);
+
+        System.out.println("\nEducation:");
+        for (String education : educationList) {
+            System.out.println("- " + education);
+        }
+
+        System.out.println("\nExperience:");
+        for (String experience : experienceList) {
+            System.out.println("- " + experience);
+        }
+
+        System.out.println("\nSkills:");
+        for (String skill : skillList) {
+            System.out.println("- " + skill);
+        }
+
+        // Write resume to a file
+        String fileName = getInput("\nEnter the filename to save the resume (e.g., resume.txt): ");
+        saveToFile(name, email, phone, address, educationList, experienceList, skillList, fileName);
+    }
+
+    // Method to save resume to a text file
+    public static void saveToFile(String name, String email, String phone, String address,
+                                  ArrayList<String> educationList, ArrayList<String> experienceList,
+                                  ArrayList<String> skillList, String fileName) {
+        try (FileWriter writer = new FileWriter(fileName)) {
+            writer.write("Resume\n");
+            writer.write("Name: " + name + "\n");
+            writer.write("Email: " + email + "\n");
+            writer.write("Phone: " + phone + "\n");
+            writer.write("Address: " + address + "\n");
+
+            writer.write("\nEducation:\n");
+            for (String education : educationList) {
+                writer.write("- " + education + "\n");
+            }
+
+            writer.write("\nExperience:\n");
+            for (String experience : experienceList) {
+                writer.write("- " + experience + "\n");
+            }
+
+            writer.write("\nSkills:\n");
+            for (String skill : skillList) {
+                writer.write("- " + skill + "\n");
+            }
+
+            System.out.println("Resume successfully saved to " + fileName);
+        } catch (IOException e) {
+            System.out.println("An error occurred while saving the file.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        generateResume();
+    }
+}
